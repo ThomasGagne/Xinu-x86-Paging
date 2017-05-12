@@ -8,6 +8,7 @@
 #include <queue.h>
 #include <memory.h>
 #include <safemem.h>
+#include <paging.h>
 
 extern void xdone(void);
 
@@ -40,6 +41,9 @@ syscall kill(tid_typ tid)
     /* reclaim used memory regions */
     memRegionReclaim(tid);
 #endif                          /* UHEAP_SIZE */
+
+    // Reclaim allocated frames
+    reclaimframes(thrptr->pagedir);
 
     send(thrptr->parent, tid);
 

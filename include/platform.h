@@ -86,7 +86,9 @@ extern struct platform platform;
 /* Used internally by create()  */
 void *setupStack(void *stackaddr, void *procaddr,
                  void *retaddr, uint nargs, va_list ap);
-
+/* Used by create() when in paging mode */
+void *setupVirtualStack(void *stackaddr, void *virtualstackaddr, void *procaddr, 
+			void *retaddr, uint nargs, va_list ap);
 int platforminit(void);
 
 #endif                          /* _PLATFORM_H_ */

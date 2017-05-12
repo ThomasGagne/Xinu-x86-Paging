@@ -17,6 +17,8 @@
 
 /* Kernel function prototypes */
 void nulluser(void);
+void nothingthread(void);
+void spawnedthread(void);
 
 /* Kernel function prototypes */
 syscall kprintf(const char *fmt, ...);

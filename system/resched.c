@@ -8,6 +8,7 @@
 #include <clock.h>
 #include <queue.h>
 #include <memory.h>
+#include <paging.h>
 
 extern void ctxsw(void *, void *, uchar);
 int resdefer;                   /* >0 if rescheduling deferred */
@@ -53,7 +54,19 @@ int resched(void)
     thrnew = &thrtab[thrcurrent];
     thrnew->state = THRCURR;
 
-    /* change address space identifier to thread id */
+    kprintf("Rescheduling to thread %d, %s\n", thrcurrent, thrnew->name);
+
+    // Debugging
+    if(thrcurrent == 2) {
+      asm("nop");
+      kprintf("thrcurrent is 222222\n");
+    }
+
+    // Reload the CR3 register to hold the new thread's page directory address
+    loadCR3(thrnew->pagedir);
+    asm("nop");
+    
+    /* change address space identifier to thread id */    
     asid = thrcurrent & 0xff;
     ctxsw(&throld->stkptr, &thrnew->stkptr, asid);
 

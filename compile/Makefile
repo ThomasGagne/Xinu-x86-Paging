@@ -26,6 +26,9 @@ TOPDIR  := ..
 # platformVars can add more flags if desired.
 CFLAGS  :=
 
+# -g adds debugging symbols
+CFLAGS += -g
+
 # Do not perform linking until the end.
 CFLAGS  += -c
 

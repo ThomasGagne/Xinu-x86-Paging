@@ -7,6 +7,7 @@
 #include <platform.h>
 #include <memory.h>
 #include <interrupt.h>
+#include <thread.h>
 
 /**
  * @ingroup memory_mgmt
@@ -28,6 +29,7 @@ syscall memfree(void *memptr, uint nbytes)
     register struct memblock *block, *next, *prev;
     irqmask im;
     ulong top;
+    struct thrent *thread;
 
     /* make sure block is in heap */
     if ((0 == nbytes)
@@ -37,13 +39,16 @@ syscall memfree(void *memptr, uint nbytes)
         return SYSERR;
     }
 
+    // Setup thread pointer
+    thread = &thrtab[thrcurrent];
+
     block = (struct memblock *)memptr;
     nbytes = (ulong)roundmb(nbytes);
 
     im = disable();
 
-    prev = &memlist;
-    next = memlist.next;
+    prev = &(thread->memlist);
+    next = thread->memlist.next;
     while ((next != NULL) && (next < block))
     {
         prev = next;
@@ -68,7 +73,7 @@ syscall memfree(void *memptr, uint nbytes)
         return SYSERR;
     }
 
-    memlist.length += nbytes;
+    thread->memlist.length += nbytes;
 
     /* coalesce with previous block if adjacent */
     if (top == (ulong)block)

@@ -17,9 +17,13 @@ extern void halt(void);
 void xdone(void)
 {
     kprintf("\r\n\r\nAll user processes have completed.\r\n\r\n");
+    // This is causing page faults
+    // Again, can't really turn it off, unfortunately
+    /*
 #ifdef GPIO_BASE
     gpioLEDOff(GPIO_LED_CISCOWHT);
-#endif                          /* GPIO_BASE */
+#endif                          // GPIO_BASE 
+    */
     disable();
     halt();
 }

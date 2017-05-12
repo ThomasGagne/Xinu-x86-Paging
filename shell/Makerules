@@ -49,6 +49,9 @@ C_FILES += xsh_usbinfo.c
 # Test commands
 C_FILES += xsh_test.c xsh_testsuite.c
 
+# Tom's memory region testing commands
+C_FILES += xsh_memsizetest.c
+
 S_FILES =
 
 # Add the files to the compile source path

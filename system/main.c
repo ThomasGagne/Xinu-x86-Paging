@@ -20,6 +20,7 @@ static void print_os_info(void);
  */
 thread main(void)
 {
+  kprintf("STARTING MAIN\n");
 #if HAVE_SHELL
     int shelldevs[4][3];
     uint nshells = 0;
@@ -109,6 +110,7 @@ thread main(void)
     {
         uint i;
         char name[16];
+	kprintf("Gonna create shells and shit\n");
 
         for (i = 0; i < nshells; i++)
         {
@@ -123,8 +125,12 @@ thread main(void)
                 kprintf("WARNING: Failed to create %s", name);
             }
         }
+
+	kprintf("got done creating shells and shit\n");
     }
 #endif
+
+    kprintf("Awwwwwwwwwwwwwwwwwwwwwww baby\n");
 
     return 0;
 }

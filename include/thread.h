@@ -83,6 +83,7 @@ struct thrent
     bool hasmsg;                /**< nonzero iff msg is valid           */
     struct memblock memlist;    /**< free memory list of thread         */
     int fdesc[NDESC];           /**< device descriptors for thread      */
+    uint *pagedir;              /**< pointer to page directory          */
 };
 
 extern struct thrent thrtab[];

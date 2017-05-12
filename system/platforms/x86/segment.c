@@ -50,7 +50,7 @@ void insertseg(int index, int base, int limit, int properties)
 
 void initialsegs(void)
 {
-    /* some segment setup */
+  /* some segment setup */
     insertseg(0, 0x00000000, 0x00000000, 0x00000000);
     insertseg(1, 0x00000000, 0xffffffff, SEG_CODE_KERNEL);
     insertseg(2, 0x00000000, 0xffffffff, SEG_DATA_KERNEL);

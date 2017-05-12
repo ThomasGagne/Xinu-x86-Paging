@@ -151,7 +151,11 @@
  * Define kernel memory segments for MIPS32 processors
  */
 #define KUSEG_BASE 0x00000000   /**< userspace mapped base              */
-#define KUSEG_SIZE 0x80000000   /**< userspace mapped (2 GB)            */
+#define KUSEG_SIZE 0x80000000   /**< userspace mapped (1 GB)            */
+
+//#define KSWAP_BASE 0x40000000   /**< simulated swap space base          */
+//#define KSWAP_SIZE 0x40000000   /**< simulated swap space size (1 GB)   */
+
 #define KSEG0_BASE 0x80000000   /**< kernel unmapped, cached base       */
 #define KSEG0_SIZE 0x20000000   /**< kernel unmapped, cahced (512 MB)   */
 #define KSEG1_BASE 0xA0000000   /**< kernel unmapped, uncached base     */

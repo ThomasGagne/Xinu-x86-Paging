@@ -6,6 +6,9 @@
 
 #include <interrupt.h>
 #include <memory.h>
+#include <stdio.h>
+#include <paging.h>
+#include <thread.h>
 
 /**
  * @ingroup memory_mgmt
@@ -22,40 +25,45 @@
  *      with memfree() when done with it.
  */
 void *memget(uint nbytes)
-{
+{  
     register struct memblock *prev, *curr, *leftover;
     irqmask im;
+    struct thrent *thread;
 
     if (0 == nbytes)
     {
         return (void *)SYSERR;
     }
 
+    // Setup thread pointer
+    thread = &thrtab[thrcurrent];
+
     /* round to multiple of memblock size   */
     nbytes = (ulong)roundmb(nbytes);
 
     im = disable();
 
-    prev = &memlist;
-    curr = memlist.next;
+    prev = &(thread->memlist);
+    curr = thread->memlist.next;
     while (curr != NULL)
     {
         if (curr->length == nbytes)
         {
             prev->next = curr->next;
-            memlist.length -= nbytes;
+            thread->memlist.length -= nbytes;
 
             restore(im);
             return (void *)(curr);
         }
         else if (curr->length > nbytes)
         {
+  	    pageregion((uint)curr, (uint)(curr + nbytes));
             /* split block into two */
             leftover = (struct memblock *)((ulong)curr + nbytes);
             prev->next = leftover;
             leftover->next = curr->next;
             leftover->length = curr->length - nbytes;
-            memlist.length -= nbytes;
+            thread->memlist.length -= nbytes;
 
             restore(im);
             return (void *)(curr);

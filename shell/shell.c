@@ -17,6 +17,8 @@
 #include <conf.h>
 #include <framebuffer.h>
 
+#include <mips.h>
+
 const struct centry commandtab[] = {
 #if NETHER
     {"arp", FALSE, xsh_arp},
@@ -46,6 +48,9 @@ const struct centry commandtab[] = {
 #endif
     {"memstat", FALSE, xsh_memstat},
     {"memdump", FALSE, xsh_memdump},
+
+    {"memsizetest", FALSE, xsh_memsizetest},
+    
 #if NETHER
     {"nc", FALSE, xsh_nc},
     {"netdown", FALSE, xsh_netdown},
@@ -120,6 +125,7 @@ extern ulong foreground;
  */
 thread shell(int indescrp, int outdescrp, int errdescrp)
 {
+  kprintf("STARTING SHELL SHIT BABY\n");
     char buf[SHELL_BUFLEN];     /* line input buffer        */
     short buflen;               /* length of line input     */
     char tokbuf[SHELL_BUFLEN + SHELL_MAXTOK];   /* token value buffer       */
@@ -182,6 +188,28 @@ thread shell(int indescrp, int outdescrp, int errdescrp)
         printf(SHELL_BANNER);
         printf(SHELL_START);
     }
+
+    /* Print out memory definitions */
+#if defined(KUSEG_BASE)
+    printf("KUSEG_BASE: 0x%x \n", KUSEG_BASE);
+    printf("KUSEG_SIZE: 0x%x \n", KUSEG_SIZE);
+
+    /*
+    printf("KSWAP_BASE: 0x%x \n", KSWAP_BASE);
+    printf("KSWAP_SIZE: 0x%x \n", KSWAP_SIZE);
+    */
+    
+    printf("KSEG0_BASE: 0x%x \n", KSEG0_BASE);
+    printf("KSEG0_SIZE: 0x%x \n", KSEG0_SIZE);
+    printf("KSEG1_BASE: 0x%x \n", KSEG1_BASE);
+    printf("KSEG1_SIZE: 0x%x \n", KSEG1_SIZE);
+    printf("KSEG2_BASE: 0x%x \n", KSEG2_BASE);
+    printf("KSEG2_SIZE: 0x%x \n", KSEG2_SIZE);
+    printf("PMEM_MASK:  0x%x \n", PMEM_MASK);
+
+    printf("memlist.length: %x\n", memlist.length);
+
+#endif
 
     /* Continually receive and handle commands */
     while (TRUE)

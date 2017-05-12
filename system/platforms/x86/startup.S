@@ -11,7 +11,7 @@
 
 	.globl	gdt
 	.globl	gdtr
-	.extern memheap
+	.extern framelist
 	.extern initialsegs
 	.extern ownerTable
 
@@ -132,7 +132,7 @@ heapat:
 	jne		heapat
 
 	addl	$4, %ebx
-	leal	memheap, %edx
+	leal	framelist, %edx
 	movl	%ebx, 0(%edx)
 
 	/* set monitor coprocessor bit in CR0 */
